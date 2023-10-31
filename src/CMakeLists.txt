@@ -87,7 +87,7 @@ if(PAHO_BUILD_SHARED)
     ## add dependencies to the shared library
     target_link_libraries(paho-mqttpp3
         PRIVATE ${LIBS_SYSTEM}
-        PUBLIC PahoMqttC::PahoMqttC Threads::Threads)
+        PUBLIC paho-mqtt3cs paho-mqtt3as Threads::Threads)
 
     # It would be nice to exort the include paths from the obj lib, but we
     # get an export error. Perhaps in a future version?
@@ -125,7 +125,7 @@ if(PAHO_BUILD_STATIC)
     ## add dependencies to the shared library
     target_link_libraries(paho-mqttpp3-static
         PRIVATE ${LIBS_SYSTEM}
-        PUBLIC PahoMqttC::PahoMqttC Threads::Threads)
+        PUBLIC paho-mqtt3cs-static paho-mqtt3as-static Threads::Threads)
 
     target_include_directories(paho-mqttpp3-static PUBLIC
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
