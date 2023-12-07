@@ -78,7 +78,7 @@ endif()
 
 ## --- Build directories ---
 
-if(PAHO_WITH_MQTT_C)
+if(${PAHO_WITH_MQTT_C})
   include(${PROJECT_SOURCE_DIR}/cmake/getCPM.cmake)
   cpmaddpackage(NAME paho-mqtt VERSION 1.3.13 
     GIT_REPOSITORY "https://github.com/eclipse/paho.mqtt.c.git"
