@@ -117,6 +117,6 @@ elseif(UNIX)
 endif()
 
 include(CPack)
-add_subdirectory(cmake)
+# add_subdirectory(cmake)
 
 

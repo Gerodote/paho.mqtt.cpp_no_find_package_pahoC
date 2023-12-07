@@ -22,8 +22,10 @@
 #     Guilherme Maciel Ferreira - initial version
 #     Frank Pagliughi - made the shared library optional
 #*******************************************************************************/
-
-# find_package(PahoMqttC REQUIRED)
+include(${PROJECT_SOURCE_DIR}/cmake/getCPM.cmake)
+cpmaddpackage(NAME paho-mqtt VERSION 1.3.13 GIT_REPOSITORY
+  "https://github.com/eclipse/paho.mqtt.c.git" OPTIONS PAHO_WITH_SSL ON
+  PAHO_WITH_LIBUUID ON  PAHO_HIGH_PERFOMANCE ON PAHO_BUILD_STATIC ${PAHO_BUILD_STATIC} PAHO_BUILD_SHARED ${PAHO_BUILD_SHARED} PAHO_ENABLE_TESTING OFF PAHO_BUILD_SAMPLES OFF)
 
 # --- The headers ---
 
