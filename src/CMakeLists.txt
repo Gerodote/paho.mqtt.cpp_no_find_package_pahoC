@@ -132,7 +132,7 @@ if(PAHO_BUILD_STATIC)
     ## add dependencies to the shared library
     target_link_libraries(paho-mqttpp3-static
         PRIVATE ${LIBS_SYSTEM}
-		PUBLIC PahoMqttC::paho-mqtt3cs-static PahoMqttC::paho-mqtt3as-static
+		PUBLIC paho-mqtt3cs-static paho-mqtt3as-static
 		PUBLIC Threads::Threads)
 
     target_include_directories(paho-mqttpp3-static PUBLIC
