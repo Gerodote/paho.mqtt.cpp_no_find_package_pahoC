@@ -51,6 +51,10 @@ option(PAHO_BUILD_TESTS "Build tests" FALSE)
 option(PAHO_BUILD_DOCUMENTATION "Create and install the API documentation (requires Doxygen)" FALSE)
 option(PAHO_WITH_MQTT_C "Build Paho C from the internal GIT submodule." FALSE)
 
+if(${PAHO_WITH_MQTT_C})
+	SET(PAHO_C_WITH_LIBUUID TRUE CACHE BOOL "Flag that defines whether libuuid or a custom uuid implementation should be used")
+endif()
+
 ## --- C++11 build flags ---
 
 set(CMAKE_CXX_STANDARD 11)
@@ -73,6 +77,30 @@ elseif(UNIX)
 endif()
 
 ## --- Build directories ---
+
+if(PAHO_WITH_MQTT_C)
+  include(${PROJECT_SOURCE_DIR}/cmake/getCPM.cmake)
+  cpmaddpackage(NAME paho-mqtt VERSION 1.3.13 
+    GIT_REPOSITORY "https://github.com/eclipse/paho.mqtt.c.git"
+    OPTIONS PAHO_WITH_SSL ${PAHO_WITH_SSL}
+	PAHO_WITH_LIBUUID ${PAHO_C_WITH_LIBUUID}  
+    PAHO_HIGH_PERFOMANCE ON
+    PAHO_BUILD_STATIC ${PAHO_BUILD_STATIC}
+    PAHO_BUILD_SHARED ${PAHO_BUILD_SHARED}
+    PAHO_ENABLE_TESTING OFF
+    PAHO_BUILD_SAMPLES OFF
+	)
+
+	set(list_of_paho_mqtt_c_targets "paho-mqtt;paho-mqtt3as;paho-mqtt3c;paho-mqtt3cs;paho-mqtt3a-static;paho-mqtt3as-static;paho-mqtt3c-static;paho-mqtt3cs-static")
+	foreach(paho_c_target ${list_of_paho_mqtt_c_targets})
+	    if(TARGET ${paho_c_target})
+	        message(DEBUG "Target ${paho_c_target} exists." )
+		else()
+			message(DEBUG "Target ${paho_c_target} DOES NOT exist." )
+	    endif()
+	endforeach()
+
+endif()
 
 # For the paho_mqtt_c module
 list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
@@ -118,5 +146,5 @@ elseif(UNIX)
 endif()
 
 include(CPack)
-# add_subdirectory(cmake)
+add_subdirectory(cmake)
 

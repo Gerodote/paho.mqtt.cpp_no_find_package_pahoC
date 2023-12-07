@@ -22,11 +22,6 @@
 #     Guilherme Maciel Ferreira - initial version
 #     Frank Pagliughi - made the shared library optional
 #*******************************************************************************/
-include(${PROJECT_SOURCE_DIR}/cmake/getCPM.cmake)
-cpmaddpackage(NAME paho-mqtt VERSION 1.3.13 GIT_REPOSITORY
-	"https://github.com/eclipse/paho.mqtt.c.git" OPTIONS PAHO_WITH_SSL ${PAHO_WITH_SSL}
-  PAHO_WITH_LIBUUID ON  PAHO_HIGH_PERFOMANCE ON PAHO_BUILD_STATIC ${PAHO_BUILD_STATIC} PAHO_BUILD_SHARED ${PAHO_BUILD_SHARED} PAHO_ENABLE_TESTING OFF PAHO_BUILD_SAMPLES OFF)
-
 
 # --- The headers ---
 
@@ -98,7 +93,8 @@ if(PAHO_BUILD_SHARED)
     ## add dependencies to the shared library
     target_link_libraries(paho-mqttpp3
         PRIVATE ${LIBS_SYSTEM}
-        PUBLIC paho-mqtt3cs paho-mqtt3as Threads::Threads)
+		PUBLIC paho-mqtt3cs paho-mqtt3as 
+		PUBLIC Threads::Threads)
 
     # It would be nice to export the include paths from the obj lib, but we
     # get an export error. Perhaps in a future version?
@@ -136,7 +132,8 @@ if(PAHO_BUILD_STATIC)
     ## add dependencies to the shared library
     target_link_libraries(paho-mqttpp3-static
         PRIVATE ${LIBS_SYSTEM}
-        PUBLIC paho-mqtt3cs-static paho-mqtt3as-static Threads::Threads)
+		PUBLIC PahoMqttC::paho-mqtt3cs-static PahoMqttC::paho-mqtt3as-static
+		PUBLIC Threads::Threads)
 
     target_include_directories(paho-mqttpp3-static PUBLIC
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
