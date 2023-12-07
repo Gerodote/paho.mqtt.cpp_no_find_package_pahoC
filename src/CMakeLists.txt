@@ -153,3 +153,6 @@ if(PAHO_BUILD_STATIC)
 endif()
 
 
+if(${PAHO_WITH_MQTT_C})
+	target_link_libraries(paho-mqttpp3 PUBLIC paho-mqtt3as paho-mqtt3cs)
+endif()
