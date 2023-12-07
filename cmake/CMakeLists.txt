@@ -3,24 +3,32 @@ configure_file(${package_name}Config.cmake.in ${package_name}Config.cmake @ONLY)
 
 include(CMakePackageConfigHelpers)
 write_basic_package_version_file(
-    "${CMAKE_CURRENT_BINARY_DIR}/${package_name}ConfigVersion.cmake"
-    VERSION ${PROJECT_VERSION}
-    COMPATIBILITY SameMajorVersion) # TODO
+  "${CMAKE_CURRENT_BINARY_DIR}/${package_name}ConfigVersion.cmake"
+  VERSION ${PROJECT_VERSION}
+  COMPATIBILITY SameMajorVersion) # TODO
 
-# you don't need it because it seems to be already exist inside of src/CMakeLists.txt
+if(${PAHO_BUILD_SHARED})
+  list(APPEND targets paho-mqttpp3)
+endif()
 
-# export(EXPORT ${package_name}
-#     FILE "${CMAKE_CURRENT_BINARY_DIR}/${package_name}Targets.cmake"
-#     NAMESPACE ${package_name}::)
+# static version doesn't work and idk why
+
+if(${PAHO_BUILD_STATIC})
+  list(APPEND targets paho-mqttpp3-static)
+endif()
+
+install(
+  TARGETS ${targets}
+  EXPORT ${PROJECT_NAME}Targets
+  LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+  RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+  ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+  INCLUDES
+  DESTINATION include
+  PUBLIC_HEADER DESTINATION include)
 #
-# install(EXPORT ${package_name} DESTINATION lib/cmake/${package_name}
-#     FILE ${package_name}Targets.cmake
-#     NAMESPACE ${package_name}::)
-#
-# install(FILES
-#     "${CMAKE_CURRENT_BINARY_DIR}/${package_name}Config.cmake"
-#     FindPahoMqttC.cmake
-#     "${CMAKE_CURRENT_BINARY_DIR}/${package_name}ConfigVersion.cmake"
-#     DESTINATION lib/cmake/${package_name})
-
-
+install(
+  EXPORT ${PROJECT_NAME}Targets
+  FILE ${PROJECT_NAME}Targets.cmake
+  NAMESPACE ${PROJECT_NAME}::
+  DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME})
