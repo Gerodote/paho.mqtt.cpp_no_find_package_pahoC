@@ -13,22 +13,22 @@ endif()
 
 # static version doesn't work and idk why
 
-if(${PAHO_BUILD_STATIC})
-  list(APPEND targets paho-mqttpp3-static)
-endif()
+# if(${PAHO_BUILD_STATIC}) list(APPEND targets paho-mqttpp3-static) endif()
 
-install(
-  TARGETS ${targets}
-  EXPORT ${PROJECT_NAME}Targets
-  LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-  RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
-  ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
-  INCLUDES
-  DESTINATION include
-  PUBLIC_HEADER DESTINATION include)
-#
-install(
-  EXPORT ${PROJECT_NAME}Targets
-  FILE ${PROJECT_NAME}Targets.cmake
-  NAMESPACE ${PROJECT_NAME}::
-  DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME})
+if(${targets})
+  install(
+    TARGETS ${targets}
+    EXPORT ${PROJECT_NAME}Targets
+    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    INCLUDES
+    DESTINATION include
+    PUBLIC_HEADER DESTINATION include)
+  #
+  install(
+    EXPORT ${PROJECT_NAME}Targets
+    FILE ${PROJECT_NAME}Targets.cmake
+    NAMESPACE ${PROJECT_NAME}::
+    DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME})
+endif()
